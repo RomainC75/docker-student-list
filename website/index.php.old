@@ -15,7 +15,7 @@
             </form>
 
             <?php
-              if(isset($_SERVER['REQUEST_METHOD']) and $_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['submit']))
+              if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['submit']))
               {
               $username = getenv('USERNAME');
               $password = getenv('PASSWORD');
@@ -25,7 +25,6 @@
                 "http" => array(
                 "header" => "Authorization: Basic " . base64_encode("$username:$password"),
               )));
-
               $url = 'http://simple_api:5000/pozos/api/v1.0/get_student_ages';
               $list = json_decode(file_get_contents($url, false, $context), true);
               echo "<p style='color:red;; font-size: 20px;'>This is the list of the student with age</p>";

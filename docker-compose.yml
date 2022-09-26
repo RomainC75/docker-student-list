@@ -1,0 +1,34 @@
+version: "3.4"
+
+services:
+
+  simple_api:
+    build: ./simple_api
+    networks:
+      - app
+    ports:
+      - "5000:5000"
+
+  website:
+    # image: "php:8.1.0RC4-apache"
+    image: "php:apache"
+    volumes:
+      #- ./website:/usr/src/myapp
+      - ./website:/var/www/html
+    environment:
+      - USERNAME=username
+      - PASSWORD=password
+    depends_on:
+      - simple_api
+    ports:
+      - 80:80
+    networks:
+      - app
+    # command: php -a /var/www/html/index.php
+    command: ["php", "-a", "/var/www/html/index.php"]
+networks:
+  app:
+    driver: bridge
+
+
+#docker run -it --name website -v "$(pwd)":/var/www/html -e USERNAME=username -e PASSWORD=password -p 80:80 -w /var/www/html php:apache php index.php
